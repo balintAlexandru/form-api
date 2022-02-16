@@ -26,6 +26,7 @@ const ApiForm = () => {
     setFirstName('');
     setLastName('');
     setMedicSection([]);
+    setShow(false)
     console.log(model);
       // Fetch server here
 
