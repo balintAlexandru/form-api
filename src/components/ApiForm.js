@@ -1,75 +1,74 @@
 import React, { useState } from 'react';
 
-
 const ApiForm = () => {
-
-  const [name, setName] = useState('');
+  // Create inputs variables
+  const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [sectionName, setSectionName] = useState('');
-  const [sendTo, setMedicName] = useState('');
-  //sendto
-  const [sections, setSections] = useState([
-    { id:1, title: "pneumologie", medics: ["popescu", "ionescu", "andreescu"] },
-    { id:2, title: "cardiologie", medics: ["popescu1", "ionescu1", "andreescu1"] },
-    { id:3, title: "RMN", laboratoare: ["RMNNNN", "ionescu2", "andreescu2"] }
+  const [sendTo, setSendTo] = useState('');
+
+  // Create Sections variables
+  const sections = ([
+    { id:1, title: "Pneumologie", medics: ["Dr.Andrei", "Dr.Ionut", "Dr.Popescu"] },
+    { id:2, title: "Cardiologie", medics: ["Dr.Alex", "Dr.Ionescu", "Dr.Petrescu"] },
+    { id:3, title: "RMN", laboratoare: ["RMN Cerebral", "RMN Abdominal", "RMN Toracal"] }
   ]);
+
+  // Create Help variables
   const [show, setShow] = useState(false);
   const [ medicSection, setMedicSection ] = useState([]);
+  const [sendToTitle, setSendToTitle] = useState('');
+
+  // Create functions
   const handleSubmit = (e) => {
     e.preventDefault();
-    const model = { name, lastName, sectionName, sendTo };
+    const model = { firstName, lastName, sectionName, sendTo };
+    setFirstName('');
+    setLastName('');
+    setMedicSection([]);
     console.log(model);
-    // fetch('http://localhost:8000/blogs/', {
-    //   method: 'POST',
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(blog)
-    // }).then(() => {
-    //   console.log('new form added');
-    // })
-  }
- 
+      // Fetch server here
 
-  const myChange = (event) => {
-    setSectionName(event.target.value);
+
+
+
+
+  }
+  const sectionChange = (event) => {
     setShow(true)
+    setSectionName(event.target.value);
     sections.forEach(section => {
       if(section.title === event.target.value){
         if(section.title === 'RMN'){
           setMedicSection(section.laboratoare);
+          setSendToTitle('Laboratoare');
         }
         else{
           setMedicSection(section.medics);
+          setSendToTitle('Medici');
         }
       }
     });
-  
   }
-  const medicChange = (event) => {
-    setMedicName(event.target.value);
+  const sendToChange = (event) => {
+    setSendTo(event.target.value);
   } 
+
 
   return (
     <div className="create">
       <h2>Api Form</h2>
 
       <form onSubmit={handleSubmit}>
-        <label>Nume</label>
-        <input
-          type="text"
-          required
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
 
-        <label>Prenume</label>
-        <input
-          required
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+        <label>First Name</label>
+        <input type="text" required value={firstName} onChange={(e) => setFirstName(e.target.value)} />
 
-        <label>Sectie</label>
-        <select onChange={myChange}>
+        <label>Last Name</label>
+        <input type="text" required value={lastName} onChange={(e) => setLastName(e.target.value)} />
+
+        <label>Section</label>
+        <select onChange={sectionChange}>
           {sections?.map((item) => {
             return (
               <option value={item.title}>{item.title}</option>
@@ -77,19 +76,19 @@ const ApiForm = () => {
           })}
         </select>
 
-        {show && <div> 
-        <label>Medici</label>
-        <select onChange={medicChange}>
-          {medicSection?.map((item) => {
-            return (
-              <option value={item}>{item}</option>
-            )
-          })}
-        </select>
-        </div>
+        { show && 
+            <div> 
+             <label>{sendToTitle}</label>
+             <select onChange={sendToChange}>
+              {medicSection?.map((item) => {
+                return (
+                 <option value={item}>{item}</option>
+                )
+               })}
+             </select>
+            </div>
         }
-
-        <button>Add</button>
+        <button>Add Form</button>
       </form>
     </div>
   );
