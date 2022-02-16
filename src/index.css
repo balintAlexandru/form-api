@@ -57,9 +57,19 @@ label{
   display: block;
 }
 button{
+  background-color: orange;
+  border:none;
   margin-top: 2rem;
   width: 70%;
   padding: 1rem;
   cursor: pointer;
+  transition-duration: .3s;
+}
+button:hover{
+  width: 75%;
+  border-radius: 5%;
+}
+.show-send{
+  transition-duration: 1s;
 }
 
